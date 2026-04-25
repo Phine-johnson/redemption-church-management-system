@@ -1,0 +1,3560 @@
+:root {
+  --bg: #f3f5fb;
+  --panel: #ffffff;
+  --panel-soft: #f7f8fd;
+  --ink: #202b57;
+  --muted: #6e7898;
+  --line: #dbe2f3;
+  --teal: #27379b;
+  --teal-deep: #18256e;
+  --green: #2f8a46;
+  --amber: #d62e31;
+  --rose: #e26a6a;
+  --presby-blue: #27379b;
+  --presby-red: #d62e31;
+  --presby-white: #ffffff;
+  --presby-green: #2b8e42;
+  --shadow: 0 24px 60px rgba(24, 37, 110, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(39, 55, 155, 0.12), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(214, 46, 49, 0.12), transparent 20%),
+    linear-gradient(180deg, #fbfcff 0%, var(--bg) 100%);
+  color: var(--ink);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+}
+
+.login-page {
+  position: relative;
+  min-height: 100vh;
+  padding: 36px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.page-orb {
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.orb-left {
+  width: 340px;
+  height: 340px;
+  left: -120px;
+  bottom: -80px;
+  background: radial-gradient(circle, rgba(22, 143, 136, 0.24), rgba(22, 143, 136, 0.02));
+}
+
+.orb-right {
+  width: 300px;
+  height: 300px;
+  right: -80px;
+  top: -60px;
+  background: radial-gradient(circle, rgba(240, 170, 60, 0.18), rgba(240, 170, 60, 0.02));
+}
+
+.login-page-reference {
+  background:
+    linear-gradient(180deg, #f5f6fb 0%, #edf0f9 100%);
+}
+
+.reference-shape,
+.reference-ring {
+  position: absolute;
+  pointer-events: none;
+}
+
+.shape-left {
+  left: -64px;
+  bottom: 84px;
+  width: 158px;
+  height: 320px;
+  border-radius: 40px;
+  background: linear-gradient(180deg, #5c6dd6, var(--presby-blue));
+  transform: rotate(8deg);
+}
+
+.shape-left::after {
+  content: "";
+  position: absolute;
+  left: -18px;
+  top: 36px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--presby-red);
+}
+
+.shape-right {
+  right: -82px;
+  top: 100px;
+  width: 180px;
+  height: 340px;
+  border-radius: 100px;
+  border: 28px solid #b4c2f5;
+  transform: rotate(34deg);
+}
+
+.reference-ring {
+  right: 24px;
+  bottom: 8px;
+  width: 134px;
+  height: 134px;
+  border-radius: 50%;
+  border: 18px solid #d4dcfa;
+}
+
+.reference-card {
+  position: relative;
+  z-index: 1;
+  width: min(1130px, 100%);
+  background: #fff;
+  border-radius: 28px;
+  box-shadow: 0 22px 52px rgba(19, 50, 55, 0.16);
+  overflow: hidden;
+  padding-bottom: 34px;
+}
+
+.reference-banner {
+  width: min(100%, 930px);
+  margin: 0 auto;
+  background: linear-gradient(180deg, #3144b1 0%, #24358f 100%);
+  color: #fff;
+  border-bottom-left-radius: 48px;
+  border-bottom-right-radius: 48px;
+  padding: 22px 36px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  text-align: center;
+}
+
+.reference-banner h1 {
+  margin: 0;
+  font-size: clamp(2.3rem, 4vw, 4rem);
+  line-height: 1;
+  font-weight: 900;
+  font-style: italic;
+}
+
+.reference-banner p {
+  margin: 6px 0 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  font-weight: 800;
+  font-style: italic;
+}
+
+.reference-badge {
+  flex: 0 0 auto;
+}
+
+.badge-circle {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 8px solid #fff;
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.presby-badge-circle {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.presby-mini-shield {
+  width: 28px;
+  height: 34px;
+  background: linear-gradient(180deg, var(--presby-blue) 0 44%, var(--presby-red) 44% 100%);
+  clip-path: polygon(12% 0, 88% 0, 100% 18%, 92% 72%, 50% 100%, 8% 72%, 0 18%);
+  position: relative;
+}
+
+.presby-mini-shield::before,
+.presby-mini-shield::after {
+  content: "";
+  position: absolute;
+  background: #fff;
+}
+
+.presby-mini-shield::before {
+  width: 8px;
+  height: 100%;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.presby-mini-shield::after {
+  width: 100%;
+  height: 8px;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.reference-layout {
+  display: grid;
+  grid-template-columns: 330px 1fr;
+  gap: 28px;
+  padding: 30px 42px 0;
+}
+
+.reference-sidebar {
+  padding-top: 8px;
+}
+
+.reference-logo-mark {
+  display: flex;
+  justify-content: center;
+}
+
+.presby-logo {
+  position: relative;
+  width: 150px;
+  height: 116px;
+  display: grid;
+  place-items: center;
+}
+
+.presby-leaf {
+  position: absolute;
+  top: 12px;
+  width: 30px;
+  height: 90px;
+}
+
+.presby-leaf::before,
+.presby-leaf::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 36px;
+  border-radius: 100% 0;
+  background: linear-gradient(180deg, #4cad56, #23793a);
+}
+
+.presby-leaf-left {
+  left: 4px;
+}
+
+.presby-leaf-left::before {
+  left: 8px;
+  top: 8px;
+  transform: rotate(-48deg);
+}
+
+.presby-leaf-left::after {
+  left: 0;
+  top: 40px;
+  transform: rotate(-70deg);
+}
+
+.presby-leaf-right {
+  right: 4px;
+}
+
+.presby-leaf-right::before {
+  right: 8px;
+  top: 8px;
+  transform: scaleX(-1) rotate(-48deg);
+}
+
+.presby-leaf-right::after {
+  right: 0;
+  top: 40px;
+  transform: scaleX(-1) rotate(-70deg);
+}
+
+.presby-logo-core {
+  position: relative;
+  width: 98px;
+  height: 98px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--presby-blue), #202d7c);
+  box-shadow: 0 0 0 6px #fff, 0 0 0 8px rgba(39, 55, 155, 0.2);
+  display: grid;
+  place-items: center;
+}
+
+.presby-logo-book {
+  position: absolute;
+  bottom: -16px;
+  width: 76px;
+  height: 24px;
+  background: linear-gradient(180deg, #f17b7d, var(--presby-red));
+  clip-path: polygon(0 0, 48% 16%, 50% 100%, 52% 16%, 100% 0, 100% 100%, 0 100%);
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+.presby-logo-shield {
+  position: relative;
+  width: 42px;
+  height: 52px;
+  background: #fff;
+  clip-path: polygon(12% 0, 88% 0, 100% 18%, 92% 72%, 50% 100%, 8% 72%, 0 18%);
+  box-shadow: 0 0 0 3px #dde2fb;
+}
+
+.shield-block {
+  position: absolute;
+  inset: 0;
+}
+
+.shield-blue {
+  background: var(--presby-blue);
+  clip-path: polygon(0 0, 100% 0, 100% 18%, 0 58%);
+}
+
+.shield-red {
+  background: var(--presby-red);
+  clip-path: polygon(0 58%, 100% 18%, 100% 100%, 0 100%);
+}
+
+.shield-cross,
+.shield-cross::before {
+  content: "";
+  position: absolute;
+  background: #fff;
+}
+
+.shield-cross {
+  width: 10px;
+  height: 100%;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.shield-cross::before {
+  width: 100%;
+  height: 10px;
+  left: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.shield-palm {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3px;
+  height: 15px;
+  background: var(--presby-green);
+  transform: translate(-50%, -22%);
+}
+
+.shield-palm::before,
+.shield-palm::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 6px;
+  border-radius: 100% 0;
+  background: var(--presby-green);
+}
+
+.shield-palm::before {
+  left: -8px;
+  top: 1px;
+  transform: rotate(-26deg);
+}
+
+.shield-palm::after {
+  right: -8px;
+  top: 1px;
+  transform: scaleX(-1) rotate(-26deg);
+}
+
+.reference-logo-copy {
+  text-align: center;
+  margin: 12px 0 24px;
+}
+
+.reference-logo-copy h2 {
+  margin: 0;
+  color: var(--presby-blue);
+  font-size: clamp(2rem, 3vw, 3.1rem);
+  font-weight: 900;
+}
+
+.reference-logo-copy p {
+  margin: 8px 0 0;
+  color: var(--presby-red);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.reference-menu {
+  display: grid;
+  gap: 10px;
+}
+
+.reference-menu-item {
+  position: relative;
+  text-align: left;
+  color: #fff;
+  background: linear-gradient(90deg, #4458c8, #8392ea);
+  padding: 15px 24px 15px 16px;
+  font-weight: 700;
+  clip-path: polygon(0 0, 100% 0, 95% 100%, 0 100%);
+}
+
+.reference-menu-item.is-active {
+  background: linear-gradient(90deg, var(--presby-blue), #4b5fca);
+}
+
+.reference-menu-item.is-active::after {
+  content: "";
+  position: absolute;
+  right: -18px;
+  top: 0;
+  width: 20px;
+  height: 100%;
+  background: inherit;
+  transform: skewX(-10deg);
+}
+
+.reference-metric-stack {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.reference-metric-stack .metric-chip {
+  background: #f6f8ff;
+  border: 1px solid #dfe5fb;
+  padding: 14px;
+}
+
+.reference-main {
+  padding-top: 10px;
+}
+
+.reference-form {
+  padding: 12px 4px 0;
+}
+
+.reference-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.reference-field {
+  display: grid;
+  gap: 8px;
+}
+
+.reference-field span {
+  font-weight: 600;
+  color: #2f4245;
+}
+
+.reference-field input {
+  border: 0;
+  border-bottom: 2px solid var(--presby-blue);
+  padding: 8px 2px 10px;
+  background: transparent;
+  outline: none;
+}
+
+.reference-actions {
+  display: grid;
+  gap: 18px;
+  padding-top: 14px;
+}
+
+.reference-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #304547;
+}
+
+.reference-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--presby-blue);
+}
+
+.reference-action-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 22px;
+}
+
+.reference-login-button {
+  min-width: 270px;
+  border-radius: 999px;
+  padding: 14px 24px;
+  background: linear-gradient(180deg, var(--presby-red), #bb2228);
+  color: #fff;
+  font-weight: 900;
+  box-shadow: 0 10px 20px rgba(29, 159, 153, 0.24);
+}
+
+.reference-login-as {
+  background: transparent;
+  color: #283b3d;
+  padding: 10px 0;
+}
+
+.reference-role-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.reference-role-card {
+  position: relative;
+  min-height: 142px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 10px 22px rgba(32, 54, 66, 0.12);
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  color: var(--presby-blue);
+  padding: 18px 10px;
+  text-align: center;
+  border: 2px solid var(--presby-blue);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reference-role-card:hover {
+  border-color: var(--presby-red);
+  box-shadow: 0 10px 22px rgba(214, 46, 49, 0.25);
+  transform: translateY(-4px);
+}
+
+.bible-verse-banner {
+  background: linear-gradient(180deg, var(--presby-blue), #18256e);
+  padding: 24px 32px;
+  color: #fff;
+  text-align: center;
+  border-radius: 16px;
+  margin: 0 32px 24px;
+}
+
+.bible-verse-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--presby-red);
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.bible-verse-reference {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #fff;
+}
+
+.bible-verse-text {
+  font-size: 1.4rem;
+  font-weight: 600;
+  font-style: italic;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.bible-verse-meditation {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  font-style: italic;
+}
+
+.reference-role-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: #eef2ff;
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.reference-role-card strong {
+  max-width: 88px;
+  line-height: 1.3;
+}
+
+.reference-role-plus {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--presby-red);
+  font-weight: 900;
+}
+
+.reference-footer {
+  padding: 28px 6px 0;
+}
+
+.reference-help-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--presby-blue);
+  box-shadow: 0 10px 24px rgba(32, 54, 66, 0.14);
+  font-weight: 900;
+}
+
+.reference-help-icon {
+  font-size: 1.2rem;
+}
+
+.reference-leaf {
+  position: absolute;
+  left: 396px;
+  bottom: 10px;
+  width: 84px;
+  height: 120px;
+}
+
+.leaf-stem {
+  position: absolute;
+  left: 38px;
+  bottom: 0;
+  width: 4px;
+  height: 104px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #7a8f17, #416f1f);
+  transform: rotate(18deg);
+}
+
+.leaf-part {
+  position: absolute;
+  border-radius: 100% 0;
+  background: linear-gradient(180deg, #5abe5d, #2f8a46);
+}
+
+.leaf-part-a {
+  width: 26px;
+  height: 18px;
+  left: 10px;
+  bottom: 12px;
+  transform: rotate(-48deg);
+}
+
+.leaf-part-b {
+  width: 22px;
+  height: 15px;
+  left: 34px;
+  bottom: 24px;
+  transform: rotate(12deg);
+}
+
+.leaf-part-c {
+  width: 24px;
+  height: 16px;
+  left: 50px;
+  bottom: 46px;
+  transform: rotate(24deg);
+}
+
+.leaf-part-d {
+  width: 22px;
+  height: 15px;
+  left: 18px;
+  bottom: 58px;
+  transform: rotate(-68deg);
+}
+
+.reference-brand-mark {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  width: 102px;
+  height: 102px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 14px 28px rgba(32, 54, 66, 0.12);
+  display: grid;
+  grid-auto-flow: column;
+  place-content: center;
+  gap: 8px;
+}
+
+.reference-brand-mark span {
+  width: 12px;
+  height: 50px;
+  border-radius: 999px;
+}
+
+.reference-brand-mark span:nth-child(1) {
+  background: var(--presby-blue);
+}
+
+.reference-brand-mark span:nth-child(2) {
+  background: var(--presby-red);
+}
+
+.reference-brand-mark span:nth-child(3) {
+  background: var(--presby-blue);
+}
+
+.login-card {
+  position: relative;
+  z-index: 1;
+  width: min(1180px, 100%);
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  border-radius: 32px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow);
+}
+
+.login-brand {
+  background:
+    linear-gradient(160deg, rgba(12, 82, 77, 0.96), rgba(22, 143, 136, 0.9)),
+    linear-gradient(180deg, #0f6e68, #168f88);
+  color: #fff;
+  padding: 54px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.brand-pill,
+.section-kicker {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.brand-pill {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.login-brand h1,
+.topbar h1,
+.hero-strip h2,
+.page-section-header h2 {
+  margin: 0;
+  line-height: 1.05;
+}
+
+.login-brand h1 {
+  font-size: clamp(2.6rem, 5vw, 4.6rem);
+  max-width: 10ch;
+}
+
+.login-brand p,
+.auth-header p,
+.hero-strip p,
+.activity-row p,
+.care-row p,
+.event-details p,
+.coverage-row p,
+.transaction-row p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.6;
+}
+
+.auth-header p,
+.hero-strip p,
+.activity-row p,
+.care-row p,
+.event-details p,
+.coverage-row p,
+.transaction-row p {
+  color: var(--muted);
+}
+
+.role-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.role-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 18px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transition: transform 140ms ease, background 140ms ease;
+}
+
+.role-preview.is-selected,
+.role-preview:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: translateY(-2px);
+}
+
+.role-preview-icon,
+.avatar-circle,
+.activity-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  font-weight: 800;
+}
+
+.login-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: auto;
+}
+
+.metric-chip {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 18px;
+}
+
+.metric-chip span,
+.stat-card span,
+.mini-stat span {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.metric-chip span {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.metric-chip strong,
+.stat-card strong,
+.mini-stat strong {
+  display: block;
+  margin-top: 10px;
+  font-size: 1.5rem;
+}
+
+.auth-panel {
+  background: var(--panel);
+  padding: 54px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+}
+
+.auth-header h2 {
+  margin: 8px 0 10px;
+  font-size: 2rem;
+}
+
+.section-kicker {
+  background: var(--presby-blue);
+  color: #fff;
+}
+
+.page-section-header {
+  background: linear-gradient(180deg, var(--presby-blue), #18256e);
+  padding: 24px;
+  border-radius: 16px;
+}
+
+.page-section-header h2 {
+  color: #fff;
+}
+
+.page-section-header .section-kicker {
+  background: var(--presby-red);
+}
+
+.church-hero {
+  background: linear-gradient(180deg, var(--presby-blue) 0%, #1d2a75 72%, var(--presby-red) 100%);
+  border-radius: 20px;
+  padding: 48px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: center;
+  color: #fff;
+  margin-bottom: 32px;
+}
+
+.church-hero-content h1 {
+  font-size: 2.5rem;
+  margin: 12px 0 8px;
+  color: #fff;
+}
+
+.church-hero-date {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.church-hero-tagline {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 24px;
+}
+
+.church-hero-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.presby-logo-large {
+  width: 120px;
+  height: 120px;
+  position: relative;
+}
+
+.shield-large {
+  position: absolute;
+  width: 80px;
+  height: 90px;
+  left: 20px;
+  top: 15px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 85%, 0 100%);
+}
+
+.shield-large.shield-blue {
+  background: var(--presby-blue);
+}
+
+.shield-large.shield-red {
+  background: var(--presby-red);
+  clip-path: polygon(0 35%, 100% 35%, 100% 100%, 50% 85%, 0 100%);
+  top: 48px;
+}
+
+.cross-large {
+  position: absolute;
+  width: 20px;
+  height: 50px;
+  background: #fff;
+  left: 50px;
+  top: 25px;
+}
+
+.cross-large::before {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 20px;
+  background: #fff;
+  top: 15px;
+  left: -15px;
+}
+
+.church-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+.church-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  border: 2px solid var(--presby-blue);
+  box-shadow: 0 4px 12px rgba(39, 55, 155, 0.1);
+}
+
+.church-card-wide {
+  grid-column: 1 / -1;
+}
+
+.church-card-header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.church-card-icon {
+  font-size: 1.75rem;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, var(--presby-blue), #18256e);
+  border-radius: 12px;
+}
+
+.church-card-header h3 {
+  margin: 0;
+  color: var(--presby-blue);
+  font-size: 1.1rem;
+}
+
+.church-card-date {
+  font-size: 0.8rem;
+  color: var(--presby-red);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.church-event-list,
+.church-news-list,
+.church-contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.church-event-item {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 12px;
+  background: #f8f9fc;
+  border-radius: 12px;
+  border-left: 4px solid var(--presby-red);
+}
+
+.church-event-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 48px;
+  background: var(--presby-blue);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.church-event-day {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+}
+
+.church-event-month {
+  font-size: 0.7rem;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.church-event-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.church-event-details strong {
+  color: var(--presby-blue);
+  font-size: 0.95rem;
+}
+
+.church-event-details span {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.church-event-team {
+  color: var(--presby-red) !important;
+  font-size: 0.75rem !important;
+  font-weight: 600;
+}
+
+.church-news-list li {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  background: #f8f9fc;
+  border-radius: 10px;
+}
+
+.church-news-category {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--presby-red);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.church-news-list strong {
+  color: var(--presby-blue);
+  font-size: 0.95rem;
+}
+
+.church-news-list span {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.church-news-time {
+  font-size: 0.75rem !important;
+  color: #999 !important;
+}
+
+.church-contact-list li {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.church-contact-role {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--presby-red);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.church-contact-name {
+  color: var(--presby-blue);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.church-contact-info {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.church-service-card {
+  display: flex;
+  gap: 32px;
+  background: linear-gradient(180deg, var(--presby-blue), #18256e);
+  border-radius: 16px;
+  padding: 32px;
+  color: #fff;
+}
+
+.church-service-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
+  border-right: 2px solid rgba(255,255,255,0.2);
+  padding-right: 32px;
+}
+
+.church-service-day-name {
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.church-service-hour {
+  font-size: 1.25rem;
+  color: var(--presby-red);
+}
+
+.church-service-info h4 {
+  font-size: 1.5rem;
+  margin: 0 0 8px;
+  color: #fff;
+}
+
+.church-service-info p {
+  opacity: 0.9;
+  margin-bottom: 16px;
+}
+
+.church-prayer-form {
+  text-align: center;
+  padding: 16px;
+}
+
+.church-prayer-form p {
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.church-prayer-inputs {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.church-prayer-inputs input {
+  flex: 1;
+  min-width: 200px;
+  padding: 14px 20px;
+  border: 2px solid var(--presby-blue);
+  border-radius: 30px;
+  font-size: 0.95rem;
+}
+
+.church-footer {
+  margin-top: 40px;
+  padding: 24px;
+  text-align: center;
+  border-top: 2px solid var(--presby-blue);
+  color: var(--presby-blue);
+}
+
+.church-footer p {
+  margin: 4px 0;
+  font-size: 0.85rem;
+}
+
+.bible-verse-mini {
+  padding: 12px;
+  background: #f8f9fc;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.bible-verse-mini .bible-verse-ref {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--presby-red);
+}
+
+.bible-verse-mini .bible-verse-text {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #666;
+  margin-top: 6px;
+}
+
+.bible-full-reader {
+  margin-top: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.bible-selectors {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.bible-selectors select,
+.bible-selectors input {
+  padding: 14px 16px;
+  border: 2px solid var(--presby-blue);
+  border-radius: 10px;
+  font-size: 1rem;
+  background: #fff;
+}
+
+.bible-selectors select:focus,
+.bible-selectors input:focus {
+  border-color: var(--presby-red);
+  outline: none;
+}
+
+.bible-loading {
+  text-align: center;
+  padding: 20px;
+  color: var(--presby-blue);
+}
+
+.bible-text-display {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 16px;
+  background: #f8f9fc;
+  border-radius: 12px;
+}
+
+.bible-chapter-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--presby-blue);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--presby-blue);
+}
+
+.bible-verse-full {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.bible-verse-full .verse-num {
+  font-weight: 700;
+  color: var(--presby-red);
+  font-size: 0.85rem;
+}
+
+.bible-verse-full .verse-text {
+  line-height: 1.6;
+  color: #333;
+}
+
+.bible-chapter-preview {
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 12px;
+  background: #fff;
+  border-radius: 10px;
+  margin-top: 12px;
+}
+
+.public-bible-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.bible-daily-section {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.bible-daily-card, .bible-weekly-verse {
+  background: linear-gradient(180deg, var(--presby-blue), #18256e);
+  padding: 32px;
+  border-radius: 16px;
+  color: #fff;
+}
+
+.bible-daily-label, .bible-weekly-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--presby-red);
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.bible-daily-reference, .bible-weekly-reference {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.bible-daily-text, .bible-weekly-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.bible-search-section {
+  margin-bottom: 32px;
+}
+
+.bible-search-box input {
+  width: 100%;
+  padding: 18px 24px;
+  border: 2px solid var(--presby-blue);
+  border-radius: 30px;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.bible-books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.bible-book-card {
+  background: #fff;
+  border: 2px solid var(--presby-blue);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bible-book-card:hover {
+  border-color: var(--presby-red);
+  transform: translateY(-2px);
+}
+
+.bible-book-card.is-selected {
+  background: var(--presby-blue);
+}
+
+.bible-book-name {
+  display: block;
+  font-weight: 700;
+  color: var(--presby-blue);
+  margin-bottom: 4px;
+}
+
+.bible-book-card.is-selected .bible-book-name {
+  color: #fff;
+}
+
+.bible-book-chapters {
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.bible-devotionals-section {
+  margin-top: 32px;
+}
+
+.bible-devotionals-section h3 {
+  color: var(--presby-blue);
+  margin-bottom: 20px;
+}
+
+.bible-devotionals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.bible-devotional-card {
+  background: #fff;
+  border: 2px solid var(--presby-blue);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.bible-devotional-day {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--presby-red);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.bible-devotional-verse {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--presby-blue);
+  margin-bottom: 8px;
+}
+
+.bible-devotional-text {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .bible-daily-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bible-version-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  background: #fff;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 2px solid var(--presby-blue);
+}
+
+.bible-version-label {
+  font-weight: 700;
+  color: var(--presby-blue);
+}
+
+.bible-version-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.bible-version-btn {
+  padding: 10px 18px;
+  border: 2px solid var(--presby-blue);
+  border-radius: 25px;
+  background: #fff;
+  color: var(--presby-blue);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bible-version-btn:hover {
+  border-color: var(--presby-red);
+  color: var(--presby-red);
+}
+
+.bible-version-btn.is-active {
+  background: var(--presby-blue);
+  color: #fff;
+}
+
+.bible-daily-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.bible-reading-section {
+  margin-bottom: 32px;
+}
+
+.bible-reading-section h3 {
+  color: var(--presby-blue);
+  margin-bottom: 16px;
+}
+
+.bible-popular-verses {
+  display: grid;
+  gap: 16px;
+}
+
+.bible-popular-verse {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  border-left: 4px solid var(--presby-red);
+}
+
+.bible-popular-ref {
+  font-weight: 700;
+  color: var(--presby-blue);
+  margin-bottom: 8px;
+}
+
+.bible-popular-text {
+  font-style: italic;
+  color: #333;
+  line-height: 1.6;
+}
+
+.bible-chapter-section {
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  border: 2px solid var(--presby-blue);
+}
+
+.bible-chapter-section h3 {
+  color: var(--presby-blue);
+  margin-bottom: 16px;
+}
+
+.bible-chapter-nav {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.bible-chapter-btn {
+  padding: 10px 20px;
+  background: var(--presby-blue);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.bible-chapter-btn:hover {
+  background: var(--presby-red);
+}
+
+.bible-chapter-example {
+  padding: 20px;
+  background: #f8f9fc;
+  border-radius: 8px;
+  color: #666;
+}
+
+.bible-devotional-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--presby-blue);
+  margin: 8px 0;
+}
+
+.bible-reading-section {
+  margin-bottom: 32px;
+}
+
+.bible-reading-section h3 {
+  color: var(--presby-blue);
+  margin-bottom: 12px;
+}
+
+.bible-reading-intro {
+  margin-bottom: 16px;
+  color: #666;
+}
+
+.bible-reading-intro + .bible-popular-verses {
+  margin-top: 20px;
+}
+
+.bible-popular-verses {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.bible-popular-verse {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  border-left: 4px solid var(--presby-red);
+}
+
+.bible-popular-ref {
+  font-weight: 700;
+  color: var(--presby-blue);
+  margin-bottom: 8px;
+}
+
+.bible-popular-text {
+  font-style: italic;
+  color: #333;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.bible-chapter-section {
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  border: 2px solid var(--presby-blue);
+}
+
+.bible-chapter-section h3 {
+  color: var(--presby-blue);
+  margin-bottom: 16px;
+}
+
+.bible-chapter-msg {
+  margin-bottom: 20px;
+}
+
+.bible-chapter-msg p {
+  margin-bottom: 16px;
+  color: #666;
+}
+
+.bible-chapter-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bible-chapter-btn {
+  min-width: 40px;
+  height: 40px;
+  border: 2px solid var(--presby-blue);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--presby-blue);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.bible-chapter-btn:hover {
+  border-color: var(--presby-red);
+  color: var(--presby-red);
+}
+
+.bible-chapter-btn.is-active {
+  background: var(--presby-blue);
+  color: #fff;
+}
+
+.bible-chapter-content {
+  padding: 20px;
+  background: #f8f9fc;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+.bible-read-note {
+  font-size: 1rem;
+  color: var(--presby-blue);
+  margin-bottom: 16px;
+}
+
+.bible-sample-verses {
+  display: grid;
+  gap: 16px;
+}
+
+.bible-verse-item {
+  padding: 16px;
+  background: #fff;
+  border-radius: 10px;
+}
+
+.bible-verse-ref {
+  font-weight: 700;
+  color: var(--presby-red);
+  margin-bottom: 8px;
+}
+
+.bible-verse-text {
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.bible-more-note {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.bible-community-section {
+  margin-top: 32px;
+}
+
+.bible-community-section h3 {
+  color: var(--presby-blue);
+  margin-bottom: 20px;
+}
+
+.bible-group-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.bible-group-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid var(--presby-blue);
+}
+
+.bible-group-name {
+  font-weight: 700;
+  color: var(--presby-blue);
+  margin-bottom: 8px;
+}
+
+.bible-group-time, .bible-group-loc {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.bible-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  color: var(--presby-blue);
+}
+
+.bible-loading .loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid var(--presby-blue);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.bible-error {
+  padding: 20px;
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 12px;
+  color: #856404;
+  margin: 20px 0;
+}
+
+.bible-error-note {
+  font-size: 0.85rem;
+  margin-top: 8px;
+  opacity: 0.8;
+}
+
+.bible-chapter-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.bible-chapter-label {
+  font-weight: 700;
+  color: var(--presby-blue);
+}
+
+.bible-chapter-content {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  border: 2px solid var(--presby-blue);
+}
+
+.bible-chapter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f0f0f0;
+  margin-bottom: 20px;
+}
+
+.bible-chapter-header h4 {
+  margin: 0;
+  color: var(--presby-blue);
+  font-size: 1.3rem;
+}
+
+.bible-chapter-version {
+  font-size: 0.8rem;
+  color: var(--presby-red);
+  font-weight: 600;
+}
+
+.bible-verses {
+  display: grid;
+  gap: 16px;
+}
+
+.bible-verse {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.bible-verse-nr {
+  font-weight: 700;
+  color: var(--presby-red);
+  font-size: 0.9rem;
+}
+
+.bible-verse-text {
+  line-height: 1.7;
+  color: #333;
+}
+
+.bible-select-prompt {
+  padding: 40px;
+  text-align: center;
+  background: #f8f9fc;
+  border-radius: 12px;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .church-hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 32px 24px;
+  }
+  
+  .church-hero-logo {
+    display: none;
+  }
+  
+  .church-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .church-service-card {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .church-service-time {
+    border-right: none;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+    padding-right: 0;
+    padding-bottom: 20px;
+  }
+}
+
+.form-stack {
+  display: grid;
+  gap: 18px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field span {
+  font-weight: 600;
+}
+
+.field input,
+.select-input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #f8fbfb;
+  padding: 15px 16px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.field input:focus,
+.select-input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 4px rgba(22, 143, 136, 0.12);
+}
+
+.checkbox-row {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--muted);
+}
+
+.checkbox-row input {
+  accent-color: var(--teal);
+}
+
+.primary-button,
+.secondary-button {
+  border-radius: 999px;
+  padding: 14px 22px;
+  font-weight: 700;
+}
+
+.primary-button {
+  background: linear-gradient(180deg, var(--presby-blue), #18256e);
+  color: #fff;
+  box-shadow: 0 12px 26px rgba(39, 55, 155, 0.26);
+  border: none;
+}
+
+.primary-button:hover {
+  background: linear-gradient(180deg, var(--presby-red), #bb2228);
+  box-shadow: 0 12px 26px rgba(214, 46, 49, 0.26);
+}
+
+.primary-button:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.secondary-button {
+  background: #edf6f5;
+  color: var(--teal-deep);
+}
+
+.auth-footer-note,
+.form-error {
+  color: var(--muted);
+}
+
+.form-error {
+  color: #b94949;
+  background: #fff0f0;
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 270px 1fr;
+}
+
+.sidebar {
+  background: linear-gradient(180deg, var(--presby-blue) 0%, #1d2a75 72%, var(--presby-red) 100%);
+  color: #fff;
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+
+.sidebar-brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 0 16px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.sidebar-brand-mark {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 3px solid rgba(255, 255, 255, 0.45);
+  background: transparent;
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.sidebar-brand strong,
+.profile-chip strong {
+  display: block;
+}
+
+.sidebar-brand span,
+.profile-chip span {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.9rem;
+}
+
+.sidebar-brand strong {
+  font-size: 1.05rem;
+}
+
+.sidebar-brand span {
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+}
+
+.sidebar-nav {
+  display: grid;
+  gap: 0;
+  padding-top: 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 16px;
+  color: rgba(255, 255, 255, 0.96);
+  position: relative;
+  min-height: 36px;
+  font-size: 0.92rem;
+}
+
+.nav-item.is-active,
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.nav-icon {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  border-radius: 3px;
+  border: 1.7px solid currentColor;
+  background: transparent;
+}
+
+.nav-icon-people {
+  border-radius: 50%;
+}
+
+.nav-icon-calendar {
+  border-radius: 2px;
+}
+
+.nav-icon-wallet {
+  border-radius: 6px;
+}
+
+.nav-chevron {
+  margin-left: auto;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.nav-parent {
+  width: 100%;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-flyout-group {
+  position: relative;
+}
+
+.nav-flyout-menu {
+  position: absolute;
+  left: calc(100% - 6px);
+  top: 0;
+  min-width: 180px;
+  background: #fff;
+  color: #42545c;
+  box-shadow: 0 14px 28px rgba(31, 43, 48, 0.14);
+  display: none;
+  z-index: 20;
+  padding: 10px 0;
+}
+
+.nav-flyout-group:hover .nav-flyout-menu,
+.nav-flyout-group.is-open .nav-flyout-menu {
+  display: grid;
+}
+
+.flyout-link {
+  padding: 11px 16px;
+  font-size: 0.94rem;
+  color: #42545c;
+}
+
+.flyout-link:hover,
+.flyout-link.is-active {
+  background: #f3f5ff;
+}
+
+.sidebar-card {
+  margin-top: auto;
+  display: none;
+}
+
+.bullet-list {
+  margin: 14px 0 0;
+  padding-left: 18px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.8;
+}
+
+.ink-list {
+  color: var(--ink);
+}
+
+.workspace {
+  padding: 18px 16px;
+  background: #f6f6f6;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 14px;
+  padding: 8px 6px 16px;
+  background: #fff;
+  border-bottom: 1px solid #ededed;
+}
+
+.topbar h1 {
+  margin-top: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.profile-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+}
+
+.avatar-circle {
+  background: linear-gradient(180deg, #ae8f63, #6a4a26);
+  color: #fff;
+}
+
+.sidebar-footer-profile {
+  margin-top: auto;
+  padding: 12px 16px 0;
+  display: grid;
+  gap: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.sidebar-footer-profile strong {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.sidebar-footer-profile span {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.76rem;
+}
+
+.sidebar-logout {
+  border-radius: 999px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-weight: 700;
+}
+
+.presby-sidebar-mark {
+  position: relative;
+}
+
+.sidebar-shield {
+  width: 16px;
+  height: 20px;
+  background: linear-gradient(180deg, var(--presby-blue) 0 44%, var(--presby-red) 44% 100%);
+  clip-path: polygon(12% 0, 88% 0, 100% 18%, 92% 72%, 50% 100%, 8% 72%, 0 18%);
+  position: relative;
+}
+
+.sidebar-shield::before,
+.sidebar-shield::after {
+  content: "";
+  position: absolute;
+  background: #fff;
+}
+
+.sidebar-shield::before {
+  width: 4px;
+  height: 100%;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.sidebar-shield::after {
+  width: 100%;
+  height: 4px;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.topbar-icon-button {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: #f3f3f3;
+}
+
+.alert-banner,
+.loading-state,
+.hero-strip,
+.stat-card,
+.panel-card,
+.mini-stat,
+.event-card {
+  background: var(--panel);
+  border: 1px solid rgba(219, 231, 228, 0.9);
+  box-shadow: 0 10px 28px rgba(18, 53, 55, 0.06);
+}
+
+.alert-banner {
+  border-radius: 18px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  color: #9c3b3b;
+  background: #fff5f5;
+}
+
+.loading-state {
+  min-height: 300px;
+  border-radius: 28px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 4px solid #cfe6e2;
+  border-top-color: var(--teal);
+  animation: spin 0.9s linear infinite;
+}
+
+.page-content {
+  display: grid;
+  gap: 24px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.dashboard-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 2px solid var(--presby-blue);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dashboard-card:hover {
+  box-shadow: 0 4px 12px rgba(39, 55, 155, 0.25);
+  transform: translateY(-2px);
+  border-color: var(--presby-red);
+  background: linear-gradient(180deg, #fff, #f8f5f5);
+}
+
+.dashboard-card .card-icon {
+  font-size: 2rem;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, var(--presby-blue), #202d7c);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.dashboard-card .card-content h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--presby-blue);
+  margin: 0 0 4px;
+}
+
+.dashboard-card .card-content p {
+  font-size: 0.875rem;
+  color: #666;
+  margin: 0;
+}
+
+.hero-strip {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr;
+  gap: 18px;
+  border-radius: 28px;
+  padding: 28px;
+}
+
+.hero-strip h2 {
+  margin: 12px 0;
+  font-size: clamp(2rem, 3vw, 3rem);
+  max-width: 16ch;
+}
+
+.hero-summary-card {
+  border-radius: 22px;
+  background: linear-gradient(180deg, #103e40, #1a7f78);
+  color: #fff;
+  padding: 24px;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.hero-summary-card strong {
+  font-size: 1.35rem;
+}
+
+.hero-summary-card span,
+.hero-summary-card small {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.stats-grid,
+.members-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.stat-card,
+.mini-stat {
+  border-radius: 22px;
+  padding: 22px;
+}
+
+.stat-card small {
+  display: block;
+  margin-top: 10px;
+  color: var(--green);
+}
+
+.content-grid-two {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.panel-card {
+  border-radius: 28px;
+  padding: 24px;
+}
+
+.panel-header,
+.page-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.panel-header {
+  margin-bottom: 18px;
+}
+
+.panel-header h3,
+.event-details h3 {
+  margin: 0;
+}
+
+.panel-header span {
+  color: var(--muted);
+}
+
+.stack-list {
+  display: grid;
+  gap: 14px;
+}
+
+.activity-row,
+.care-row,
+.coverage-row,
+.transaction-row {
+  display: grid;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+
+.activity-row:first-child,
+.care-row:first-child,
+.coverage-row:first-child,
+.transaction-row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.activity-row {
+  grid-template-columns: auto 1fr auto;
+}
+
+.activity-row time {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.care-row,
+.coverage-row,
+.transaction-row {
+  grid-template-columns: 1fr auto;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 88px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.status-high,
+.status-pending {
+  background: #fff2df;
+  color: #b77913;
+}
+
+.status-medium {
+  background: #eef4ff;
+  color: #3766c3;
+}
+
+.status-active {
+  background: #e5f6ec;
+  color: #1d8a4c;
+}
+
+.event-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.event-card {
+  border-radius: 24px;
+  padding: 22px;
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 18px;
+}
+
+.event-date-block {
+  border-radius: 18px;
+  background: linear-gradient(180deg, #133f41, #178b84);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  padding: 14px;
+  text-align: center;
+}
+
+.event-date-block strong {
+  font-size: 2rem;
+}
+
+.event-meta {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  color: var(--muted);
+}
+
+.progress-bar {
+  width: 180px;
+  height: 10px;
+  border-radius: 999px;
+  background: #e4eeec;
+  overflow: hidden;
+}
+
+.progress-bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--green));
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  text-align: left;
+  padding: 14px 10px;
+  border-top: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.data-table th {
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.data-table td span {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+}
+
+.money-in {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.money-out {
+  color: var(--rose);
+  font-weight: 700;
+}
+
+.finance-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.member-home {
+  min-height: 100vh;
+  padding: 32px;
+  background:
+    radial-gradient(circle at top right, rgba(22, 143, 136, 0.12), transparent 22%),
+    linear-gradient(180deg, #f5f8f8 0%, #edf3f2 100%);
+  display: grid;
+  gap: 22px;
+}
+
+.member-topbar,
+.member-hero,
+.member-content-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.member-topbar {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.member-topbar h1 {
+  margin: 8px 0 6px;
+}
+
+.member-topbar p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.member-hero {
+  grid-template-columns: 1.1fr 0.9fr;
+}
+
+.member-profile-card,
+.member-hero-note,
+.member-stat-card,
+.member-mini-card {
+  background: #fff;
+  border: 1px solid rgba(219, 231, 228, 0.9);
+  box-shadow: 0 10px 28px rgba(18, 53, 55, 0.06);
+}
+
+.member-profile-card,
+.member-hero-note {
+  border-radius: 26px;
+  padding: 24px;
+}
+
+.member-profile-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.member-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, #1aa29a, #127770);
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 900;
+}
+
+.member-profile-card p,
+.member-hero-note p,
+.member-mini-card p {
+  margin: 6px 0 0;
+  color: var(--muted);
+}
+
+.member-badge {
+  display: inline-flex;
+  margin-top: 10px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: #e6f6ee;
+  color: #1d8a4c;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.member-hero-note {
+  background: linear-gradient(180deg, #163f41, #198981);
+  color: #fff;
+}
+
+.member-hero-note p {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.member-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.member-stat-card {
+  border-radius: 22px;
+  padding: 22px;
+}
+
+.member-stat-card span {
+  display: block;
+  color: var(--muted);
+}
+
+.member-stat-card strong {
+  display: block;
+  margin-top: 10px;
+  font-size: 1.8rem;
+}
+
+.member-stat-card small {
+  display: block;
+  margin-top: 10px;
+  color: var(--teal-deep);
+}
+
+.member-content-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.member-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.member-mini-card {
+  border-radius: 20px;
+  padding: 18px;
+}
+
+.dashboard-reference {
+  display: grid;
+  gap: 16px;
+}
+
+.dashboard-overview-grid {
+  display: grid;
+  grid-template-columns: 360px minmax(320px, 1fr) minmax(320px, 1fr);
+  gap: 16px;
+}
+
+.dashboard-shortcuts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.dashboard-shortcut-card,
+.dashboard-panel {
+  background: #fff;
+  border: 1px solid #efefef;
+  box-shadow: 0 3px 12px rgba(24, 53, 55, 0.06);
+}
+
+.dashboard-shortcut-card {
+  min-height: 146px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 20px 12px;
+}
+
+.dashboard-shortcut-card strong {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.dashboard-shortcut-card span {
+  color: #6f7e86;
+}
+
+.shortcut-icon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  font-size: 1.4rem;
+  margin-bottom: 6px;
+}
+
+.shortcut-icon.cyan {
+  background: #e8f9fb;
+  color: #3ec0d4;
+}
+
+.shortcut-icon.peach {
+  background: #fff0e8;
+  color: #ff8d55;
+}
+
+.shortcut-icon.amber {
+  background: #fff8e9;
+  color: #f7b434;
+}
+
+.shortcut-icon.mint {
+  background: #ebfaf2;
+  color: #53c68a;
+}
+
+.dashboard-panel {
+  padding: 12px 14px;
+}
+
+.dashboard-panel-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.donut-widget {
+  display: grid;
+  place-items: center;
+  padding: 8px 0 6px;
+}
+
+.donut-ring {
+  width: 166px;
+  height: 166px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.donut-hole {
+  width: 124px;
+  height: 124px;
+  border-radius: 50%;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  box-shadow: inset 0 0 0 1px #f0f0f0;
+}
+
+.donut-hole strong {
+  display: block;
+  font-size: 1.05rem;
+}
+
+.donut-hole span {
+  color: #727d86;
+  font-size: 0.86rem;
+}
+
+.donut-legend {
+  display: grid;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.donut-legend.users {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.donut-legend.payment-summary {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.donut-legend-item {
+  text-align: center;
+  position: relative;
+  padding-top: 10px;
+}
+
+.donut-legend-item strong {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.donut-legend-item span:last-child {
+  color: #727d86;
+  font-size: 0.82rem;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.dashboard-chart-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.chart-panel {
+  min-height: 250px;
+}
+
+.panel-header.compact {
+  margin-bottom: 12px;
+}
+
+.panel-header.compact h3 {
+  font-size: 0.95rem;
+}
+
+.chart-legend-tag {
+  font-size: 0.72rem;
+  color: #7f8c93;
+}
+
+.mock-chart {
+  position: relative;
+  height: 180px;
+  padding: 24px 14px 26px 42px;
+}
+
+.chart-grid-lines {
+  position: absolute;
+  inset: 24px 14px 28px 42px;
+  display: grid;
+}
+
+.chart-grid-lines span {
+  border-bottom: 1px solid #ececec;
+}
+
+.chart-axis-labels.left {
+  position: absolute;
+  left: 8px;
+  top: 20px;
+  bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #8f9aa1;
+  font-size: 0.72rem;
+}
+
+.chart-axis-labels.bottom {
+  position: absolute;
+  left: 42px;
+  right: 14px;
+  bottom: 4px;
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  color: #8f9aa1;
+  font-size: 0.68rem;
+  text-align: center;
+}
+
+.chart-line {
+  position: absolute;
+  left: 58px;
+  right: 38px;
+  top: 52px;
+  height: 88px;
+  opacity: 0.75;
+  clip-path: polygon(0 82%, 12% 78%, 24% 76%, 38% 70%, 52% 60%, 66% 62%, 82% 48%, 100% 38%, 100% 42%, 82% 52%, 66% 66%, 52% 64%, 38% 74%, 24% 80%, 12% 82%, 0 86%);
+}
+
+.chart-line-green {
+  background: linear-gradient(180deg, rgba(147, 199, 87, 0.35), rgba(147, 199, 87, 0.06));
+}
+
+.chart-line-blue {
+  background: linear-gradient(180deg, rgba(114, 179, 233, 0.35), rgba(114, 179, 233, 0.06));
+}
+
+.dashboard-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.95fr;
+  gap: 16px;
+}
+
+.dashboard-list-stack,
+.dashboard-side-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.slim-list-panel {
+  padding-top: 10px;
+}
+
+.simple-list {
+  display: grid;
+}
+
+.simple-list-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 1px solid #f1f1f1;
+}
+
+.simple-list-row:first-child {
+  border-top: 0;
+}
+
+.simple-list-row.activity-style {
+  grid-template-columns: auto 1fr;
+}
+
+.simple-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.gradient-a {
+  background: linear-gradient(180deg, #4bc2c1, #238b8b);
+}
+
+.gradient-b {
+  background: linear-gradient(180deg, #f6bb50, #ee8f33);
+}
+
+.gradient-c {
+  background: linear-gradient(180deg, #5ecf7d, #289d57);
+}
+
+.gradient-d {
+  background: linear-gradient(180deg, #7ec8f5, #4b93cf);
+}
+
+.gradient-e {
+  background: linear-gradient(180deg, #e48aaa, #d54f7c);
+}
+
+.simple-list-row span,
+.simple-list-row strong {
+  line-height: 1.25;
+}
+
+.simple-list-row div span {
+  display: block;
+  color: #839198;
+  font-size: 0.8rem;
+  margin-top: 3px;
+}
+
+.mini-square-button {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: #ebfbf1;
+  color: #53b26f;
+  font-weight: 700;
+}
+
+.calendar-panel {
+  padding-top: 10px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  border-top: 1px solid #f1f1f1;
+  border-left: 1px solid #f1f1f1;
+}
+
+.calendar-head,
+.calendar-cell {
+  min-height: 34px;
+  border-right: 1px solid #f1f1f1;
+  border-bottom: 1px solid #f1f1f1;
+  display: grid;
+  place-items: center;
+  font-size: 0.74rem;
+}
+
+.calendar-head {
+  min-height: 28px;
+  color: #8c979f;
+  font-weight: 700;
+}
+
+.calendar-cell.highlight {
+  background: #2db56b;
+  color: #fff;
+}
+
+.calendar-cell.alert {
+  background: #ea6464;
+  color: #fff;
+}
+
+.dashboard-hidden-data {
+  display: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1100px) {
+  .login-card,
+  .app-shell,
+  .hero-strip,
+  .content-grid-two {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    min-height: auto;
+  }
+
+  .stats-grid,
+  .members-summary,
+  .finance-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .reference-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .reference-role-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .member-hero,
+  .member-content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-overview-grid,
+  .dashboard-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .login-page,
+  .workspace {
+    padding: 18px;
+  }
+
+  .login-brand,
+  .auth-panel,
+  .panel-card,
+  .hero-strip {
+    padding: 22px;
+  }
+
+  .topbar,
+  .page-section-header,
+  .panel-header,
+  .topbar-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .login-metrics,
+  .role-preview-grid,
+  .stats-grid,
+  .members-summary,
+  .finance-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .member-topbar,
+  .member-stat-grid,
+  .member-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-shortcuts-grid,
+  .donut-legend.users,
+  .donut-legend.payment-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .reference-banner,
+  .reference-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .reference-layout {
+    padding: 24px 18px 0;
+  }
+
+  .reference-role-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .reference-leaf,
+  .reference-brand-mark,
+  .shape-right,
+  .reference-ring {
+    display: none;
+  }
+
+  .activity-row,
+  .event-card,
+  .coverage-row,
+  .transaction-row {
+    grid-template-columns: 1fr;
+  }
+
+  .progress-bar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .reference-role-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile-first responsive styles */
+@media (max-width: 480px) {
+  :root {
+    --content-padding: 12px;
+  }
+  
+  html {
+    font-size: 14px;
+  }
+  
+  .page-content {
+    padding: var(--content-padding);
+    gap: 16px;
+  }
+  
+  .page-section-header {
+    padding: 16px;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .page-section-header h2 {
+    font-size: 1.4rem;
+  }
+  
+  .dashboard-grid,
+  .church-grid,
+  .bible-books-grid,
+  .bible-devotionals-grid,
+  .bible-group-cards,
+  .stats-grid,
+  .members-summary {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .dashboard-card,
+  .church-card,
+  .bible-book-card,
+  .bible-devotional-card,
+  .bible-group-card {
+    padding: 16px;
+  }
+  
+  .dashboard-card .card-icon,
+  .church-card-icon,
+  .bible-version-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+  
+  .church-hero {
+    padding: 24px 16px;
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  .church-hero-content h1 {
+    font-size: 1.6rem;
+  }
+  
+  .church-hero-logo {
+    display: none;
+  }
+  
+  .church-service-card {
+    padding: 20px;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .church-service-time {
+    border-right: none;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+    padding-right: 0;
+    padding-bottom: 16px;
+  }
+  
+  .bible-version-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .bible-version-buttons {
+    width: 100%;
+  }
+  
+  .bible-version-btn {
+    flex: 1;
+    min-width: 80px;
+    text-align: center;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .bible-chapter-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+  
+  .bible-chapter-btn {
+    min-width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+  }
+  
+  .bible-verse {
+    grid-template-columns: 30px 1fr;
+    gap: 8px;
+  }
+  
+  .bible-verse-nr {
+    font-size: 0.8rem;
+  }
+  
+  .bible-verse-text {
+    font-size: 0.9rem;
+  }
+  
+  .bible-daily-section {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .bible-daily-card,
+  .bible-weekly-verse {
+    padding: 20px;
+  }
+  
+  .bible-daily-text,
+  .bible-weekly-text {
+    font-size: 1rem;
+  }
+  
+  .church-prayer-inputs {
+    flex-direction: column;
+  }
+  
+  .church-prayer-inputs input {
+    width: 100%;
+  }
+  
+  .church-footer {
+    padding: 16px;
+  }
+  
+  .app-shell {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+    flex-direction: row;
+    padding: 12px;
+    overflow-x: auto;
+  }
+  
+  .sidebar-nav {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .nav-item {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+  }
+  
+  .workspace {
+    padding: 12px;
+  }
+  
+  .topbar {
+    padding: 12px;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .topbar h1 {
+    font-size: 1.3rem;
+  }
+  
+  .login-page {
+    padding: 12px;
+  }
+  
+  .reference-card {
+    margin: 8px;
+    padding: 12px;
+  }
+  
+  .reference-banner {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+  
+  .bible-verse-banner {
+    margin: 0 12px 16px;
+    padding: 16px;
+  }
+  
+  .bible-verse-text {
+    font-size: 1.1rem;
+  }
+  
+  .form-error {
+    font-size: 0.85rem;
+  }
+  
+  .table-scroll {
+    overflow-x: auto;
+  }
+  
+  .data-table {
+    font-size: 0.85rem;
+    min-width: 500px;
+  }
+  
+  .panel-card {
+    padding: 16px;
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 481px) and (max-width: 768px) {
+  .page-content {
+    padding: 16px;
+  }
+  
+  .dashboard-grid,
+  .church-grid,
+  .bible-books-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .church-hero {
+    padding: 32px 24px;
+  }
+  
+  .church-hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .bible-version-buttons {
+    flex-wrap: wrap;
+  }
+  
+  .bible-chapter-grid {
+    grid-template-columns: repeat(8, 1fr);
+  }
+  
+  .sidebar {
+    width: 80px;
+  }
+  
+  .sidebar-nav {
+    flex-direction: column;
+  }
+  
+  .nav-item span:not(.nav-icon) {
+    display: none;
+  }
+  
+  .workspace {
+    margin-left: 80px;
+  }
+}
+
+/* Large tablet and small desktop */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .dashboard-grid,
+  .church-grid,
+  .bible-books-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .church-hero {
+    padding: 40px;
+  }
+}
+
+/* Ensure touch-friendly tap targets */
+@media (pointer: coarse) {
+  button,
+  .bible-book-card,
+  .bible-chapter-btn,
+  .nav-item,
+  .reference-role-card {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* Prevent zoom on iOS */
+@supports (-webkit-touch-callout: none) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
