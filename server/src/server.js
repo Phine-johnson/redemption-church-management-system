@@ -159,11 +159,11 @@ app.get("/api/health", (_request, response) => {
 });
 
 const users = [
-  { email: "admin@redemptionpresby.org", password: "password123", name: "Administrator", role: "Super Admin" },
+  { email: "admin@redemptionpresby.org", password: "presby@200", name: "Administrator", role: "Super Admin" },
   { email: "audiovisual@redemptionpresby.org", password: "password123", name: "Media Team Lead", role: "AudioVisual" },
   { email: "accountant@redemptionpresby.org", password: "password123", name: "Finance Officer", role: "Accountant" },
   { email: "clerk@redemptionpresby.org", password: "password123", name: "Church Clerk", role: "Clerk" },
-  { email: "member@redemptionpresby.org", password: "password123", name: "Church Member", role: "Member" }
+  { email: "member@redemptionpresby.org", password: "", name: "Church Member", role: "Member" }
 ];
 
 app.post("/api/auth/login", (request, response) => {
