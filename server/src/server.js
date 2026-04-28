@@ -160,9 +160,9 @@ app.get("/api/health", (_request, response) => {
 
 const users = [
   { email: "admin@redemptionpresby.org", password: "presby@200", name: "Administrator", role: "Super Admin" },
-  { email: "audiovisual@redemptionpresby.org", password: "password123", name: "Media Team Lead", role: "AudioVisual" },
-  { email: "accountant@redemptionpresby.org", password: "password123", name: "Finance Officer", role: "Accountant" },
-  { email: "clerk@redemptionpresby.org", password: "password123", name: "Church Clerk", role: "Clerk" },
+  { email: "audiovisual@redemptionpresby.org", password: "presby@200", name: "Media Team Lead", role: "AudioVisual" },
+  { email: "accountant@redemptionpresby.org", password: "presby@200", name: "Finance Officer", role: "Accountant" },
+  { email: "clerk@redemptionpresby.org", password: "presby@200", name: "Church Clerk", role: "Clerk" },
   { email: "member@redemptionpresby.org", password: "", name: "Church Member", role: "Member" }
 ];
 

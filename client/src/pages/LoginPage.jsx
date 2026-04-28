@@ -39,7 +39,7 @@ export default function LoginPage({ onLogin }) {
   const [weeklyVerse, setWeeklyVerse] = useState(defaultVerse);
   const [formData, setFormData] = useState({
     email: 'admin@redemptionpresby.org',
-    password: 'presby@200',
+    password: '',
     rememberMe: true
   });
   const [submitting, setSubmitting] = useState(false);
