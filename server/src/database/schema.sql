@@ -96,10 +96,11 @@ CREATE TABLE IF NOT EXISTS members (
   baptism_location VARCHAR(200),
   spouse_name VARCHAR(200),
   spouse_email VARCHAR(255),
-  spouse_phone VARCHAR(20),
-  children_names TEXT, -- JSON array or comma-separated
+   spouse_phone VARCHAR(20),
+   children_names TEXT, -- JSON array or comma-separated
+   household TEXT,
 
-  -- Additional
+   -- Additional
   occupation VARCHAR(100),
   employer VARCHAR(200),
   education_level VARCHAR(100),
