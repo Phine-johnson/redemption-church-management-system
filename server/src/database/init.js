@@ -8,232 +8,174 @@ const usePostgres = process.env.DATABASE_URL !== undefined;
 
 let db;
 let pool;
+let isInitialized = false;
 
-// Dynamic imports based on environment
-if (usePostgres) {
+// Initialize PostgreSQL pool (called lazily)
+async function initPostgres() {
+  if (pool) return pool;
+
   const { Pool } = await import('pg');
   pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
   });
-} else {
-  // SQLite fallback for local development
-  const Database = (await import('better-sqlite3')).default;
-  db = new Database(join(__dirname, 'church.db'));
+
+  // Test connection
+  await pool.query('SELECT 1');
+  console.log('✅ PostgreSQL connected');
+  return pool;
 }
 
-// Run PostgreSQL migrations from schema.sql
-async function runMigrations() {
-  if (!usePostgres) return;
+// Initialize SQLite (called lazily)
+function initSQLite() {
+  if (db) return db;
 
+  const Database = (await import('better-sqlite3')).default;
+  db = new Database(join(__dirname, 'church.db'));
+  console.log('✅ SQLite database opened');
+  return db;
+}
+
+// Run PostgreSQL migrations
+async function runMigrations(pool) {
   try {
     const { readFileSync } = await import('fs');
     const schemaPath = join(__dirname, 'schema.sql');
     const schemaSql = readFileSync(schemaPath, 'utf-8');
 
-    // Split into individual statements
+    // Split into statements
     const statements = schemaSql
       .split(';')
-      .map(stmt => stmt.trim())
-      .filter(stmt => stmt.length > 0 && !stmt.startsWith('--') && !stmt.startsWith('/*'));
+      .map(s => s.trim())
+      .filter(s => s.length > 0 && !s.startsWith('--') && !s.startsWith('/*'));
 
     for (let i = 0; i < statements.length; i++) {
-      const stmt = statements[i];
       try {
-        await pool.query(stmt);
+        await pool.query(statements[i]);
       } catch (error) {
-        if (!error.message.toLowerCase().includes('already exists') &&
-            !error.message.toLowerCase().includes('duplicate') &&
-            !error.message.toLowerCase().includes('permission')) {
-          console.warn(`Statement ${i + 1} failed:`, stmt.substring(0, 80), '|', error.message);
+        const msg = error.message.toLowerCase();
+        if (!msg.includes('already exists') && !msg.includes('duplicate')) {
+          console.warn(`Migration stmt ${i + 1} error:`, error.message);
         }
       }
     }
 
-    // Ensure household column exists on members (for existing installations)
+    // Ensure household column exists
     try {
-      const columnCheck = await pool.query(
+      const res = await pool.query(
         "SELECT column_name FROM information_schema.columns WHERE table_name = 'members' AND column_name = 'household'"
       );
-      if (columnCheck.rows.length === 0) {
+      if (res.rows.length === 0) {
         await pool.query('ALTER TABLE members ADD COLUMN household TEXT');
-        console.log('Added household column to members table');
+        console.log('✅ Added household column');
       }
-    } catch (err) {
-      console.warn('Could not verify household column:', err.message);
+    } catch (e) {
+      console.warn('Column check failed:', e.message);
     }
 
-    console.log('Database migrations completed');
+    console.log('✅ Migrations completed');
   } catch (error) {
     console.error('Migration error:', error.message);
-    console.error(error.stack);
-  }
-}
-      }
-    }
-    console.log('Database migrations completed');
-  } catch (error) {
-    console.error('Migration error:', error.message);
-    // Don't throw - schema may already be applied
+    throw error;
   }
 }
 
-// Seed initial data (admin user, members, etc.)
-async function seedInitialData() {
-  if (!usePostgres) return;
-
+// Seed initial data
+async function seedData(pool) {
   try {
     const bcrypt = (await import('bcryptjs')).default;
 
-    // Check existing users
+    // Admin user
     const usersCount = await pool.query('SELECT COUNT(*) as count FROM users');
-    const count = parseInt(usersCount.rows[0].count, 10);
-
-    if (count === 0) {
-      const defaultPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'ChangeMe123!';
-      const passwordHash = await bcrypt.hash(defaultPassword, 12);
-
+    if (parseInt(usersCount.rows[0].count, 10) === 0) {
+      const pwd = process.env.DEFAULT_ADMIN_PASSWORD || 'ChangeMe123!';
+      const hash = await bcrypt.hash(pwd, 12);
       await pool.query(
         `INSERT INTO users (uuid, email, password_hash, first_name, last_name, role, phone)
          VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6)`,
-        ['admin@redemptionpresby.org', passwordHash, 'Administrator', 'System', 'Super Admin', '+233123456789']
+        ['admin@redemptionpresby.org', hash, 'Administrator', 'System', 'Super Admin', '+233123456789']
       );
-
-      console.log('✅ Admin user created');
-      console.log(`   Password: ${defaultPassword}`);
-      console.log('   ⚠️  Change this password immediately after first login!');
-    } else if (count === 1) {
-      // Check for placeholder hash and replace
-      const existing = await pool.query('SELECT id, password_hash FROM users LIMIT 1');
-      const user = existing.rows[0];
-      if (user.password_hash === '$2b$10$YourHashedPasswordHere') {
-        const defaultPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'ChangeMe123!';
-        const newHash = await bcrypt.hash(defaultPassword, 12);
-        await pool.query('UPDATE users SET password_hash = $1 WHERE id = $2', [newHash, user.id]);
-        console.log('✅ Admin password updated from placeholder');
-        console.log(`   New password: ${defaultPassword}`);
-      }
+      console.log('✅ Admin created');
+      console.log(`   Password: ${pwd}`);
     }
 
-    // Seed sample members if none exist
+    // Members
     const membersCount = await pool.query('SELECT COUNT(*) as count FROM members');
-    const memberCount = parseInt(membersCount.rows[0].count, 10);
-
-    if (memberCount === 0) {
+    if (parseInt(membersCount.rows[0].count, 10) === 0) {
       const initialMembers = [
-        { firstName: 'Esther', lastName: 'Coleman', email: 'esther.coleman@gracefellowship.org', ministry: 'Children Ministry', status: 'Active', lastSeen: 'Sunday Service', household: 'Coleman Family' },
-        { firstName: 'Kwame', lastName: 'Asante', email: 'kwame.asante@gracefellowship.org', ministry: 'Ushering', status: 'Pending', lastSeen: 'Bible Study', household: 'Asante Household' },
-        { firstName: 'Rachel', lastName: 'Thompson', email: 'rachel.thompson@gracefellowship.org', ministry: 'Choir', status: 'Active', lastSeen: 'Volunteer Rehearsal', household: 'Thompson Family' },
-        { firstName: 'David', lastName: 'Nartey', email: 'david.nartey@gracefellowship.org', ministry: "Men's Fellowship", status: 'Active', lastSeen: 'Community Outreach', household: 'Nartey Family' }
+        { fn: 'Esther', ln: 'Coleman', email: 'esther.coleman@gracefellowship.org', ministry: 'Children Ministry', status: 'Active', seen: 'Sunday Service', household: 'Coleman Family' },
+        { fn: 'Kwame', ln: 'Asante', email: 'kwame.asante@gracefellowship.org', ministry: 'Ushering', status: 'Pending', seen: 'Bible Study', household: 'Asante Household' },
+        { fn: 'Rachel', ln: 'Thompson', email: 'rachel.thompson@gracefellowship.org', ministry: 'Choir', status: 'Active', seen: 'Volunteer Rehearsal', household: 'Thompson Family' },
+        { fn: 'David', ln: 'Nartey', email: 'david.nartey@gracefellowship.org', ministry: "Men's Fellowship", status: 'Active', seen: 'Community Outreach', household: 'Nartey Family' }
       ];
 
       for (const m of initialMembers) {
         await pool.query(
           `INSERT INTO members (uuid, first_name, last_name, email, ministry, membership_status, last_seen, household)
            VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6, $7)`,
-          [m.firstName, m.lastName, m.email, m.ministry, m.status, m.lastSeen, m.household]
+          [m.fn, m.ln, m.email, m.ministry, m.status, m.seen, m.household]
         );
       }
-      console.log('✅ Seeded 4 sample members');
+      console.log('✅ Seeded 4 members');
     }
   } catch (error) {
     console.error('Seed error:', error.message);
   }
 }
 
-// Initialize SQLite with tables and seed data
-function initializeSQLite() {
-  if (usePostgres) return;
-
-  try {
-    // Create members table
-    db.exec(`
-      CREATE TABLE IF NOT EXISTS members (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        first_name TEXT NOT NULL,
-        last_name TEXT NOT NULL,
-        email TEXT UNIQUE NOT NULL,
-        phone TEXT,
-        ministry TEXT,
-        membership_status TEXT DEFAULT 'Visitor',
-        last_seen TEXT,
-        household TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-
-    // Seed if empty
-    const count = db.prepare('SELECT COUNT(*) as count FROM members').get().count;
-    if (count === 0) {
-      const insert = db.prepare(`
-        INSERT INTO members (first_name, last_name, email, ministry, membership_status, last_seen, household)
-        VALUES (@firstName, @lastName, @email, @ministry, @status, @lastSeen, @household)
-      `);
-
-      const initialMembers = [
-        { firstName: 'Esther', lastName: 'Coleman', email: 'esther.coleman@gracefellowship.org', ministry: 'Children Ministry', status: 'Active', lastSeen: 'Sunday Service', household: 'Coleman Family' },
-        { firstName: 'Kwame', lastName: 'Asante', email: 'kwame.asante@gracefellowship.org', ministry: 'Ushering', status: 'Pending', lastSeen: 'Bible Study', household: 'Asante Household' },
-        { firstName: 'Rachel', lastName: 'Thompson', email: 'rachel.thompson@gracefellowship.org', ministry: 'Choir', status: 'Active', lastSeen: 'Volunteer Rehearsal', household: 'Thompson Family' },
-        { firstName: 'David', lastName: 'Nartey', email: 'david.nartey@gracefellowship.org', ministry: "Men's Fellowship", status: 'Active', lastSeen: 'Community Outreach', household: 'Nartey Family' }
-      ];
-
-      for (const member of initialMembers) {
-        insert.run(member);
-      }
-      console.log('Seeded 4 initial members (SQLite)');
-    }
-
-    console.log('SQLite database initialized');
-  } catch (error) {
-    console.error('SQLite initialization error:', error);
-    throw error;
-  }
-}
-
-// Main database initialization
-async function initializeDatabase() {
+// Initialize database (called from server.js)
+export async function initializeDatabase() {
+  if (isInitialized) return;
   try {
     if (usePostgres) {
-      await runMigrations();
-      await seedInitialData();
+      pool = await initPostgres();
+      await runMigrations(pool);
+      await seedData(pool);
     } else {
-      initializeSQLite();
+      initSQLite();
     }
-    console.log(`Database ready (${usePostgres ? 'PostgreSQL' : 'SQLite'})`);
+    isInitialized = true;
+    console.log(`✅ Database ready (${usePostgres ? 'PostgreSQL' : 'SQLite'})`);
   } catch (error) {
-    console.error('Database init failed:', error);
+    console.error('❌ Database init failed:', error.message);
+    console.error(error.stack);
     throw error;
   }
 }
 
-// Generic query executor (works with both drivers)
-async function query(sql, params = []) {
+// Query helper
+export async function query(sql, params = []) {
   if (usePostgres) {
+    if (!pool) throw new Error('PostgreSQL pool not initialized');
     return pool.query(sql, params);
   } else {
-    const stmt = db.prepare(sql);
-    return stmt.all(...params);
+    if (!db) initSQLite();
+    return db.prepare(sql).all(...params);
   }
 }
 
-// Generic execute (INSERT/UPDATE/DELETE)
-async function execute(sql, params = []) {
+// Execute helper
+export async function execute(sql, params = []) {
   if (usePostgres) {
+    if (!pool) throw new Error('PostgreSQL pool not initialized');
     return pool.query(sql, params);
   } else {
+    if (!db) initSQLite();
     const stmt = db.prepare(sql);
     return { rows: stmt.run(...params) };
   }
 }
 
-// Get all members (used by bootstrap)
-async function queryMembers() {
+// Member query shortcut
+export async function queryMembers() {
   if (usePostgres) {
-    const result = await pool.query('SELECT * FROM members ORDER BY last_name, first_name LIMIT 100');
-    return result.rows;
+    const res = await pool.query('SELECT * FROM members ORDER BY last_name, first_name LIMIT 100');
+    return res.rows;
   } else {
+    if (!db) initSQLite();
     return db.prepare('SELECT * FROM members ORDER BY last_name LIMIT 100').all();
   }
 }
 
-export { db, pool, initializeDatabase, query, execute, queryMembers };
+// Export connections for debugging
+export { db, pool };
