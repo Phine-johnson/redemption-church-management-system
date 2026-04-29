@@ -40,6 +40,69 @@ async function runMigrations() {
   }
 }
 
+// Seed initial data (admin user, members, etc.)
+async function seedInitialData() {
+  if (!usePostgres) return;
+
+  try {
+    const bcrypt = (await import('bcryptjs')).default;
+
+    // Check existing users
+    const usersCount = await pool.query('SELECT COUNT(*) as count FROM users');
+    const count = parseInt(usersCount.rows[0].count, 10);
+
+    if (count === 0) {
+      const defaultPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'ChangeMe123!';
+      const passwordHash = await bcrypt.hash(defaultPassword, 12);
+
+      await pool.query(
+        `INSERT INTO users (uuid, email, password_hash, first_name, last_name, role, phone)
+         VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6)`,
+        ['admin@redemptionpresby.org', passwordHash, 'Administrator', 'System', 'Super Admin', '+233123456789']
+      );
+
+      console.log('✅ Admin user created');
+      console.log(`   Password: ${defaultPassword}`);
+      console.log('   ⚠️  Change this password immediately after first login!');
+    } else if (count === 1) {
+      // Check for placeholder hash and replace
+      const existing = await pool.query('SELECT id, password_hash FROM users LIMIT 1');
+      const user = existing.rows[0];
+      if (user.password_hash === '$2b$10$YourHashedPasswordHere') {
+        const defaultPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'ChangeMe123!';
+        const newHash = await bcrypt.hash(defaultPassword, 12);
+        await pool.query('UPDATE users SET password_hash = $1 WHERE id = $2', [newHash, user.id]);
+        console.log('✅ Admin password updated from placeholder');
+        console.log(`   New password: ${defaultPassword}`);
+      }
+    }
+
+    // Seed sample members if none exist
+    const membersCount = await pool.query('SELECT COUNT(*) as count FROM members');
+    const memberCount = parseInt(membersCount.rows[0].count, 10);
+
+    if (memberCount === 0) {
+      const initialMembers = [
+        { firstName: 'Esther', lastName: 'Coleman', email: 'esther.coleman@gracefellowship.org', ministry: 'Children Ministry', status: 'Active', lastSeen: 'Sunday Service', household: 'Coleman Family' },
+        { firstName: 'Kwame', lastName: 'Asante', email: 'kwame.asante@gracefellowship.org', ministry: 'Ushering', status: 'Pending', lastSeen: 'Bible Study', household: 'Asante Household' },
+        { firstName: 'Rachel', lastName: 'Thompson', email: 'rachel.thompson@gracefellowship.org', ministry: 'Choir', status: 'Active', lastSeen: 'Volunteer Rehearsal', household: 'Thompson Family' },
+        { firstName: 'David', lastName: 'Nartey', email: 'david.nartey@gracefellowship.org', ministry: "Men's Fellowship", status: 'Active', lastSeen: 'Community Outreach', household: 'Nartey Family' }
+      ];
+
+      for (const m of initialMembers) {
+        await pool.query(
+          `INSERT INTO members (uuid, first_name, last_name, email, ministry, membership_status, last_seen, household)
+           VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6, $7)`,
+          [m.firstName, m.lastName, m.email, m.ministry, m.status, m.lastSeen, m.household]
+        );
+      }
+      console.log('✅ Seeded 4 sample members');
+    }
+  } catch (error) {
+    console.error('Seed error:', error.message);
+  }
+}
+
 // Initialize SQLite with tables and seed data
 function initializeSQLite() {
   if (usePostgres) return;
@@ -57,40 +120,16 @@ function initializeSQLite() {
         membership_status TEXT DEFAULT 'Visitor',
         last_seen TEXT,
         household TEXT,
-        date_of_birth DATE,
-        gender TEXT,
-        address TEXT,
-        emergency_contact_name TEXT,
-        emergency_contact_phone TEXT,
-        emergency_contact_relation TEXT,
-        spouse_name TEXT,
-        spouse_email TEXT,
-        spouse_phone TEXT,
-        children_names TEXT,
-        occupation TEXT,
-        employer TEXT,
-        education_level TEXT,
-        how_did_you_hear TEXT,
-        referral_source TEXT,
-        notes TEXT,
-        baptism_date DATE,
-        baptism_location TEXT,
-        is_sunday_school BOOLEAN DEFAULT FALSE,
-        is_youth_ministry BOOLEAN DEFAULT FALSE,
-        is_worship_team BOOLEAN DEFAULT FALSE,
-        is_volunteer BOOLEAN DEFAULT FALSE,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
 
-    // Seed initial data if empty
+    // Seed if empty
     const count = db.prepare('SELECT COUNT(*) as count FROM members').get().count;
     if (count === 0) {
       const insert = db.prepare(`
-        INSERT INTO members (
-          first_name, last_name, email, ministry, membership_status, last_seen, household
-        ) VALUES (@firstName, @lastName, @email, @ministry, @status, @lastSeen, @household)
+        INSERT INTO members (first_name, last_name, email, ministry, membership_status, last_seen, household)
+        VALUES (@firstName, @lastName, @email, @ministry, @status, @lastSeen, @household)
       `);
 
       const initialMembers = [
@@ -118,6 +157,7 @@ async function initializeDatabase() {
   try {
     if (usePostgres) {
       await runMigrations();
+      await seedInitialData();
     } else {
       initializeSQLite();
     }

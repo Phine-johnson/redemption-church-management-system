@@ -575,10 +575,11 @@ CREATE INDEX IF NOT EXISTS idx_audit_action ON audit_logs(action);
 -- INITIAL SEED DATA
 -- ============================================
 
--- Default admin user (password: Admin@2024! - change immediately)
-INSERT INTO users (email, password_hash, first_name, last_name, role, phone) VALUES
-  ('admin@redemptionpresby.org', '$2b$10$YourHashedPasswordHere', 'Administrator', 'System', 'Super Admin', '+233123456789')
-ON CONFLICT (email) DO NOTHING;
+-- Default admin user (will be created by seedInitialData with proper password hash)
+-- IMPORTANT: Set DEFAULT_ADMIN_PASSWORD environment variable on Render/Neon
+-- INSERT INTO users (email, password_hash, first_name, last_name, role, phone) VALUES
+--   ('admin@redemptionpresby.org', '$2b$10$YourHashedPasswordHere', 'Administrator', 'System', 'Super Admin', '+233123456789')
+-- ON CONFLICT (email) DO NOTHING;
 
 -- Default roles data
 INSERT INTO expense_categories (category_name, description) VALUES
