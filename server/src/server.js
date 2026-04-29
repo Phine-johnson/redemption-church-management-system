@@ -47,6 +47,14 @@ initializeDatabase().catch(err => {
 // Bible routes (public)
 app.use('/api/bible', bibleRouter);
 
+// Health check (public)
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', service: 'church-cms-server', timestamp: new Date().toISOString() });
+});
+
+// Auth routes (public)
+app.use('/api/auth', apiRouter);
+
 // Bootstrap for legacy frontend compatibility
 app.get('/api/bootstrap', async (req, res) => {
   try {
@@ -110,9 +118,7 @@ app.get('/api/bootstrap', async (req, res) => {
   }
 });
 
-// ============================================
-// PROTECTED ROUTES (require auth)
-// ============================================
+// Protected routes (require authentication)
 app.use('/api', authenticate, apiRouter);
 
 // Optional auth (for profile)

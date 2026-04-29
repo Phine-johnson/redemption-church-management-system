@@ -24,9 +24,4 @@ router.use('/clusters', clusterRoutes);
 router.use('/announcements', announcementRoutes);
 router.use('/reports', reportsRoutes);
 
-// Health check (move from server.js)
-router.get('/health', (req, res) => {
-  res.json({ status: 'ok', service: 'church-cms-server', timestamp: new Date().toISOString() });
-});
-
 export default router;
