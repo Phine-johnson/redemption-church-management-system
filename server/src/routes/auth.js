@@ -83,11 +83,6 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
 
 // POST /api/auth/refresh
 router.post('/refresh', async (req, res) => {
