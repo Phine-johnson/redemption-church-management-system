@@ -11,7 +11,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Users table (replaces hardcoded users)
 CREATE TABLE IF NOT EXISTS users (
-  id SERIAL PRIMARY KEY,
+  id SERIAL PRIMARY KEY,   
   uuid UUID UNIQUE DEFAULT uuid_generate_v4(),
   email VARCHAR(255) UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
@@ -269,7 +269,7 @@ CREATE TABLE IF NOT EXISTS expense_categories (
 -- Expenses
 CREATE TABLE IF NOT EXISTS expenses (
   id SERIAL PRIMARY KEY,
-  uuid UUID UNIQUE DEFAULT uuid_g4_v4(),
+  uuid UUID UNIQUE DEFAULT uuid_generate_v4(),
   category_id INTEGER NOT NULL REFERENCES expense_categories(id),
   expense_description VARCHAR(500) NOT NULL,
   amount DECIMAL(12, 2) NOT NULL,
