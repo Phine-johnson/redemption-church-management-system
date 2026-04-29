@@ -104,6 +104,10 @@ export default function LoginPage({ onLogin }) {
 
       onLogin(payload.user);
 
+      // Store JWT tokens for subsequent API calls
+      localStorage.setItem('cms-access-token', payload.accessToken);
+      localStorage.setItem('cms-refresh-token', payload.refreshToken);
+
       const destination = roleDestinations[payload.user.role] || '/dashboard';
       navigate(destination, { replace: true });
     } catch (loginError) {

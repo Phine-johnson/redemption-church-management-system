@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import AppShell from "./components/AppShell";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -46,6 +46,18 @@ function AppRoutes() {
     error: "",
     data: null
   });
+
+  // Handle logout with token cleanup
+  const handleLogout = useCallback(async () => {
+    try {
+      await fetchJson('/api/auth/logout', { method: 'POST' }).catch(() => {});
+    } finally {
+      setSession(null);
+      localStorage.removeItem('cms-session');
+      localStorage.removeItem('cms-access-token');
+      localStorage.removeItem('cms-refresh-token');
+    }
+  }, []);
 
   useEffect(() => {
     if (session) {
@@ -95,7 +107,7 @@ function AppRoutes() {
         path="/media-audio"
         element={
           <ProtectedRoute session={session} allowedRoles={['AudioVisual']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <MediaAudioPage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -105,7 +117,7 @@ function AppRoutes() {
         path="/accountant"
         element={
           <ProtectedRoute session={session} allowedRoles={['Accountant']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <AccountantPage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -115,7 +127,7 @@ function AppRoutes() {
         path="/clerk"
         element={
           <ProtectedRoute session={session} allowedRoles={['Clerk']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <ClerkPage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -125,7 +137,7 @@ function AppRoutes() {
         path="/media-library"
         element={
           <ProtectedRoute session={session} allowedRoles={['AudioVisual']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <EventsPage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -135,7 +147,7 @@ function AppRoutes() {
         path="/live-streaming"
         element={
           <ProtectedRoute session={session} allowedRoles={['AudioVisual']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <EventsPage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -145,7 +157,7 @@ function AppRoutes() {
         path="/sermons"
         element={
           <ProtectedRoute session={session} allowedRoles={['AudioVisual']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <EventsPage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -155,7 +167,7 @@ function AppRoutes() {
         path="/graphics"
         element={
           <ProtectedRoute session={session} allowedRoles={['AudioVisual']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <EventsPage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -165,7 +177,7 @@ function AppRoutes() {
         path="/budget"
         element={
           <ProtectedRoute session={session} allowedRoles={['Accountant', 'Super Admin']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <FinancePage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -175,7 +187,7 @@ function AppRoutes() {
         path="/expenses"
         element={
           <ProtectedRoute session={session} allowedRoles={['Accountant', 'Super Admin']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <FinancePage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -185,7 +197,7 @@ function AppRoutes() {
         path="/invoicing"
         element={
           <ProtectedRoute session={session} allowedRoles={['Accountant', 'Super Admin']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <FinancePage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -195,7 +207,7 @@ function AppRoutes() {
         path="/visitors"
         element={
           <ProtectedRoute session={session} allowedRoles={['Clerk', 'Super Admin']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <AttendancePage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -205,7 +217,7 @@ function AppRoutes() {
         path="/dashboard"
         element={
           <ProtectedRoute session={session} allowedRoles={['Super Admin']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <DashboardPage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -221,7 +233,7 @@ function AppRoutes() {
         path="/member-registration"
         element={
           <ProtectedRoute session={session} allowedRoles={['Super Admin', 'Clerk']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <MemberRegistrationPage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -231,7 +243,7 @@ function AppRoutes() {
         path="/attendance"
         element={
           <ProtectedRoute session={session} allowedRoles={['Super Admin', 'Clerk']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <AttendancePage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -241,7 +253,7 @@ function AppRoutes() {
         path="/events"
         element={
           <ProtectedRoute session={session} allowedRoles={['Super Admin', 'AudioVisual', 'Clerk']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <EventsPage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -251,7 +263,7 @@ function AppRoutes() {
         path="/volunteers"
         element={
           <ProtectedRoute session={session} allowedRoles={['Super Admin', 'AudioVisual']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <VolunteersPage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -261,7 +273,7 @@ function AppRoutes() {
         path="/families"
         element={
           <ProtectedRoute session={session} allowedRoles={['Super Admin', 'Clerk']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <FamiliesPage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -271,7 +283,7 @@ function AppRoutes() {
         path="/announcements"
         element={
           <ProtectedRoute session={session} allowedRoles={['Super Admin', 'AudioVisual', 'Clerk']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <AnnouncementsPage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -281,7 +293,7 @@ function AppRoutes() {
         path="/bible"
         element={
           <ProtectedRoute session={session} allowedRoles={['Super Admin', 'AudioVisual', 'Accountant', 'Clerk', 'Member']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <BiblePage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -299,7 +311,7 @@ function AppRoutes() {
         path="/donations"
         element={
           <ProtectedRoute session={session} allowedRoles={['Super Admin', 'Accountant']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <DonationsPage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -309,7 +321,7 @@ function AppRoutes() {
         path="/reports"
         element={
           <ProtectedRoute session={session} allowedRoles={['Super Admin', 'Accountant', 'Clerk']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <ReportsPage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -319,7 +331,7 @@ function AppRoutes() {
         path="/finance"
         element={
           <ProtectedRoute session={session} allowedRoles={['Super Admin', 'Accountant']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <FinancePage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
@@ -329,7 +341,7 @@ function AppRoutes() {
         path="/settings"
         element={
           <ProtectedRoute session={session} allowedRoles={['Super Admin']}>
-            <AppShell session={session} onLogout={() => setSession(null)} bootstrap={bootstrap}>
+            <AppShell session={session} onLogout={handleLogout} bootstrap={bootstrap}>
               <SettingsPage bootstrap={bootstrap} />
             </AppShell>
           </ProtectedRoute>
