@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_BASE || "https://redemption-church-management-system.onrender.com";
+const API_BASE = import.meta.env.VITE_API_BASE === undefined ? "" : import.meta.env.VITE_API_BASE;
 
 export async function fetchJson(url, options = {}) {
   const response = await fetch(`${API_BASE}${url}`, {
