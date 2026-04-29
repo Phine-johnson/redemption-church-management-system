@@ -3,10 +3,19 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 // Database
-import { initializeDatabase } from './database/init.js';
+import { initializeDatabase, query } from './database/init.js';
 
 // Routes
-import apiRouter from './routes/index.js';
+import authRouter from './routes/auth.js';
+import userRouter from './routes/users.js';
+import memberRouter from './routes/members.js';
+import attendanceRouter from './routes/attendance.js';
+import financeRouter from './routes/finance.js';
+import smsRouter from './routes/sms.js';
+import equipmentRouter from './routes/equipment.js';
+import clusterRouter from './routes/clusters.js';
+import announcementRouter from './routes/announcements.js';
+import reportsRouter from './routes/reports.js';
 import bibleRouter from './routes/bible.js';
 
 // Middleware
@@ -41,21 +50,16 @@ initializeDatabase().catch(err => {
 });
 
 // ============================================
-// PUBLIC ROUTES
+// PUBLIC ROUTES (no auth required)
 // ============================================
-
-// Bible routes (public)
-app.use('/api/bible', bibleRouter);
-
-// Health check (public)
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', service: 'church-cms-server', timestamp: new Date().toISOString() });
 });
 
-// Auth routes (public)
-app.use('/api/auth', apiRouter);
+app.use('/api/bible', bibleRouter);
 
-// Bootstrap for legacy frontend compatibility
+app.use('/api/auth', authRouter); // Public: login, refresh, logout, change-password
+
 app.get('/api/bootstrap', async (req, res) => {
   try {
     const dashboardData = {
@@ -118,8 +122,18 @@ app.get('/api/bootstrap', async (req, res) => {
   }
 });
 
-// Protected routes (require authentication)
-app.use('/api', authenticate, apiRouter);
+// ============================================
+// PROTECTED ROUTES (require authentication)
+// ============================================
+app.use('/api/users', authenticate, userRouter);
+app.use('/api/members', authenticate, memberRouter);
+app.use('/api/attendance', authenticate, attendanceRouter);
+app.use('/api/finance', authenticate, financeRouter);
+app.use('/api/sms', authenticate, smsRouter);
+app.use('/api/equipment', authenticate, equipmentRouter);
+app.use('/api/clusters', authenticate, clusterRouter);
+app.use('/api/announcements', authenticate, announcementRouter);
+app.use('/api/reports', authenticate, reportsRouter);
 
 // Optional auth (for profile)
 const profileRouter = (await import('./routes/profile.js')).default;
