@@ -1,6 +1,9 @@
 import cors from "cors";
 import express from "express";
-import { db, initializeDatabase } from "./database/init.js";
+import { pool, initializeDatabase, queryMembers } from "./database/init.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 4001;
@@ -59,9 +62,9 @@ const dashboardData = {
 };
 
 // Function to fetch members from the database
-const getMembersFromDb = () => {
-  const rows = db.prepare('SELECT * FROM members').all();
-  return rows.map(row => ({
+const getMembersFromDb = async () => {
+  const result = await pool.query('SELECT * FROM members');
+  return result.rows.map(row => ({
     id: row.id,
     name: row.name,
     email: row.email,
@@ -193,29 +196,55 @@ app.post("/api/auth/login", (request, response) => {
   });
 });
 
-app.get("/api/bootstrap", (_request, response) => {
-  const records = getMembersFromDb();
-  response.json({
-    dashboard: dashboardData,
-    members: {
-      summary: membersSummary,
-      records
-    },
-    events: eventsData,
-    finance: financeData
-  });
+app.get("/api/bootstrap", async (_request, response) => {
+  try {
+    const records = await queryMembers();
+    response.json({
+      dashboard: dashboardData,
+      members: {
+        summary: membersSummary,
+        records: records.map(r => ({
+          id: r.id,
+          name: r.name,
+          email: r.email,
+          ministry: r.ministry,
+          status: r.status,
+          lastSeen: r.lastSeen,
+          household: r.household
+        }))
+      },
+      events: eventsData,
+      finance: financeData
+    });
+  } catch (error) {
+    console.error('Bootstrap error:', error);
+    response.status(500).json({ error: 'Failed to load data' });
+  }
 });
 
 app.get("/api/dashboard", (_request, response) => {
   response.json(dashboardData);
 });
 
-app.get("/api/members", (_request, response) => {
-  const records = getMembersFromDb();
-  response.json({
-    summary: membersSummary,
-    records
-  });
+app.get("/api/members", async (_request, response) => {
+  try {
+    const records = await queryMembers();
+    response.json({
+      summary: membersSummary,
+      records: records.map(r => ({
+        id: r.id,
+        name: r.name,
+        email: r.email,
+        ministry: r.ministry,
+        status: r.status,
+        lastSeen: r.lastSeen,
+        household: r.household
+      }))
+    });
+  } catch (error) {
+    console.error('Members fetch error:', error);
+    response.status(500).json({ error: 'Failed to load members' });
+  }
 });
 
 app.get("/api/events", (_request, response) => {
