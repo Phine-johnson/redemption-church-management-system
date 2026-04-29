@@ -27,7 +27,7 @@ async function initPostgres() {
 }
 
 // Initialize SQLite (called lazily)
-function initSQLite() {
+async function initSQLite() {
   if (db) return db;
 
   const Database = (await import('better-sqlite3')).default;
