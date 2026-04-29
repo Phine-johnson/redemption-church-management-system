@@ -2,9 +2,13 @@ import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
-import { query, execute, pool } from '../database/init.js';
+import { query, execute } from '../database/init.js';
 
 const router = Router();
+
+const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production';
+const JWT_EXPIRES_IN = '15m';
+const REFRESH_TOKEN_EXPIRES_IN = '7d';
 
 // JWT secret from env
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production';
@@ -36,7 +40,7 @@ router.post('/login', async (req, res) => {
       [email, 'active']
     );
 
-    const user = userResult.rows ? userResult.rows[0] : null;
+    const user = userResult.rows && userResult.rows[0];
 
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
@@ -49,8 +53,8 @@ router.post('/login', async (req, res) => {
     }
 
     // Generate tokens
-    const accessToken = generateToken(user.id);
-    const refreshToken = generateRefreshToken();
+    const accessToken = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+    const refreshToken = uuidv4();
 
     // Store refresh token
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
@@ -63,13 +67,6 @@ router.post('/login', async (req, res) => {
     await execute(
       'UPDATE users SET last_login_at = NOW() WHERE id = $1',
       [user.id]
-    );
-
-    // Audit log
-    await execute(
-      `INSERT INTO audit_logs (user_id, action, resource_type, resource_id, ip_address, user_agent)
-       VALUES ($1, 'login', 'user', $2, $3, $4)`,
-      [user.id, user.id, req.ip, req.get('user-agent')]
     );
 
     res.json({
@@ -86,6 +83,11 @@ router.post('/login', async (req, res) => {
       accessToken,
       refreshToken
     });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ message: 'Internal server error' });
