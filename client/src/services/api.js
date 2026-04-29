@@ -1,5 +1,11 @@
 const API_BASE = import.meta.env.VITE_API_BASE === undefined ? "" : import.meta.env.VITE_API_BASE;
 
+// Cache busting: add query param in development
+const CACHE_BUST = new URLSearchParams({ t: Date.now().toString() }).toString();
+
+// Force bypass cache: add timestamp to requests in development
+const DEV_BYPASS = Date.now();
+
 export async function fetchJson(url, options = {}) {
   const token = localStorage.getItem('cms-access-token');
 
