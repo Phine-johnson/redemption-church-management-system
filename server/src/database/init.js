@@ -31,8 +31,46 @@ async function runMigrations() {
     const schemaPath = join(__dirname, 'schema.sql');
     const schemaSql = readFileSync(schemaPath, 'utf-8');
 
-    // Execute entire schema (PostgreSQL handles IF NOT EXISTS)
-    await pool.query(schemaSql);
+    // Split into individual statements
+    const statements = schemaSql
+      .split(';')
+      .map(stmt => stmt.trim())
+      .filter(stmt => stmt.length > 0 && !stmt.startsWith('--') && !stmt.startsWith('/*'));
+
+    for (let i = 0; i < statements.length; i++) {
+      const stmt = statements[i];
+      try {
+        await pool.query(stmt);
+      } catch (error) {
+        if (!error.message.toLowerCase().includes('already exists') &&
+            !error.message.toLowerCase().includes('duplicate') &&
+            !error.message.toLowerCase().includes('permission')) {
+          console.warn(`Statement ${i + 1} failed:`, stmt.substring(0, 80), '|', error.message);
+        }
+      }
+    }
+
+    // Ensure household column exists on members (for existing installations)
+    try {
+      const columnCheck = await pool.query(
+        "SELECT column_name FROM information_schema.columns WHERE table_name = 'members' AND column_name = 'household'"
+      );
+      if (columnCheck.rows.length === 0) {
+        await pool.query('ALTER TABLE members ADD COLUMN household TEXT');
+        console.log('Added household column to members table');
+      }
+    } catch (err) {
+      console.warn('Could not verify household column:', err.message);
+    }
+
+    console.log('Database migrations completed');
+  } catch (error) {
+    console.error('Migration error:', error.message);
+    console.error(error.stack);
+  }
+}
+      }
+    }
     console.log('Database migrations completed');
   } catch (error) {
     console.error('Migration error:', error.message);
